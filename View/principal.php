@@ -35,7 +35,83 @@
 
 <body class="w3-light-grey">
 
+<?php
+	include_once '../Controller/FormacaoAcadController.php';
+		if(!isset($_SESSION))
+		{
+		session_start();
+		}
+?>
     <nav class="w3-sidebar w3-bar-block w3-center w3-blue">
+	
+
+	<div class="w3-container">
+		<table class="w3-table-all w3-centered">
+		<thead>
+			<tr class="w3-center w3-blue">
+			<th>Início</th>
+			<th>Fim</th>
+			<th>Descrição</th>
+			<th>Apagar</th>
+			</tr>
+		<thead>
+		
+<?php
+		$fCon = new FormacaoAcadController();
+		$results = $fCon->gerarLista(unserialize($_SESSION['Usuario'])->getID());
+		if($results != null)
+		while($row = $results->fetch_object()) {
+			echo '<tr>';
+			echo '<td style="width: 10%;">'.$row->inicio.'</td>';
+			echo '<td style="width: 10%;">'.$row->fim.'</td>';
+			echo '<td style="width: 65%;">'.$row->descricao.'</td>';
+			echo '<td style="width: 5%;">
+				<form action="/Controller/Navegacao.php" method="post"> <input type="hidden" name="id" value="'.$row->idformacaoAcademica.'">
+					<button name="btnExcluirFA" class="w3-button w3-block w3-blue w3-cell w3-round-large">
+					<i class="fa fa-user-times"></i> </button></td>
+				</form>';
+		echo '</tr>';
+	}
+	?>
+		</table>
+		</div>
+				
+		<div class="w3-container">
+		<table class="w3-table-all w3-centered">
+		<thead>
+		<tr class="w3-center w3-blue">
+			<th>Início</th>
+			<th>Fim</th>
+			<th>Empresa</th>
+			<th>Descrição</th>
+		<th>Apagar</th>
+		</tr>
+		<thead>
+		
+<?php
+$ePro = new ExperienciaProfissionalController();
+$results = $ePro->gerarLista(unserialize($_SESSION['Usuario'])-
+>getID());
+if($results != null)
+		while($row = $results->fetch_object()) {
+			echo '<tr>';
+			echo '<td style="width: 10%;">'.$row->inicio.'</td>';
+			echo '<td style="width: 10%;">'.$row->fim.'</td>';
+			echo '<td style="width: 10%;">'.$row->empresa.'</td>';
+			echo '<td style="width: 65%;">'.$row->descricao.'</td>';
+			echo '<td style="width: 5%;">
+				<form action="/Controller/Navegacao.php" method="post">
+				<input type="hidden" name="idEP" value="'.$row->idexperienciaprofissional.'">
+					<button name="btnExcluirEP" class="w3-button w3-block w3-blue
+					w3-cell w3-round-large">
+					<i class="fa fa-user-times"></i> </button></td>
+				</form>';
+echo '</tr>';
+}
+?>
+</table>
+</div>	
+	
         <a href="#home" class="w3-bar-item w3-button w3-block w3-cell w3-hover-light-grey w3-hover-text-cyan w3-text-light-grey">
             <i class="fa fa-home w3-xxlarge"></i>
             <p>HOME</p>
@@ -57,7 +133,6 @@
         </a>
 		
     </nav>
-    
     <div class="w3-padding-large" id="main">
 
 
@@ -65,7 +140,7 @@
 
     <div class="w3-padding-128 w3-content w3-text-grey" id="dPessoais">
         <h2 class="w3-text-cyan">Dados Pessoais</h2>
-        <form action="" method="post" class="w3-row w3-light-grey w3-text-blue w3-margin" style="width: 50%;">
+        <form action="/Controller/Navegacao.php" method="post" class="w3-row w3-light-grey w3-text-blue w3-margin" style="width: 50%;">
                 <h2 class="w3-center">Dados Pessoais</h2>
 
                 <div class="w3-row w3-section">
@@ -109,7 +184,7 @@
     <div class="w3-padding-128 w3-content w3-text-grey" id="formacao">
         <h2 class="w3-text-cyan">Formação</h2>
 
-        <form action="" method="post" class="w3-row w3-light-grey w3-text-blue w3-margin" style="width: 70%;">
+        <form action="/Controller/Navegacao.php" method="post" class="w3-row w3-light-grey w3-text-blue w3-margin" style="width: 70%;">
             <div class="w3-row w3-center">
                 <div class="w3-col" style="width:50%;">Data Inicial</div>
                 <div class="w3-rest">Data Final</div>
@@ -171,7 +246,7 @@
 // outras formacoes
     <div class="w3-padding-128 w3-content w3-text-grey" id="outrasformacoes">
         <h2 class="w3-text-cyan">Outras Formacoes</h2>
-        <form action="" method="post" class="w3-row w3-light-grey w3-text-blue w3-margin" style="width: 70%;">
+        <form action="/Controller/Navegacao.php" method="post" class="w3-row w3-light-grey w3-text-blue w3-margin" style="width: 70%;">
             <div class="w3-row w3-center">
                 <div class="w3-col" style="width:50%;">Data Inicial</div>
                 <div class="w3-rest">Data Final</div>
@@ -295,8 +370,19 @@
     </thead>
     <tbody>
       <?php
-      $ePro = new ExperienciaProfissionalController();
-      $results = $ePro->gerarLista(unserialize($_SESSION['Usuario'])->getID());
+	  if(!isset($_SESSION))
+		{
+		session_start();
+		}
+		
+		value="<?php echo unserialize($_SESSION['Usuario'])->getID();?>"
+		value="<?php echo unserialize($_SESSION['Usuario'])->getNome();?>"
+		value="<?php echo unserialize($_SESSION['Usuario'])->getDataNascimento();?>"
+		value="<?php echo unserialize($_SESSION['Usuario'])->getCPF();?>"
+		value="<?php echo unserialize($_SESSION['Usuario'])->getEmail();?>" 
+	  
+		$ePro = new ExperienciaProfissionalController();
+		$results = $ePro->gerarLista(unserialize($_SESSION['Usuario'])->getID());
 
       if ($results != null) {
         while ($row = $results->fetch_object()) {
@@ -321,7 +407,6 @@
   </table>
 </div><!--end. id: eProfissional-->
 <!--FIM DO TRECHO DE CODIGO-->
-
 
 </body>
 

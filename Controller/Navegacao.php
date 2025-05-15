@@ -32,5 +32,68 @@ include_once "../View/cadastroNaoRealizado.php";
 }
 break; 
 
+//--Adicionar Formacao--//
+case isset($_POST["btnAddFormacao"]):
+require_once "../Controller/FormacaoAcadController.php";
+include_once "../Model/Usuario.php";
+$fController = new FormacaoAcadController();
+if ($fController->inserir(
+date("Y-m-d", strtotime($_POST["txtInicioFA"])),
+date("Y-m-d", strtotime($_POST["txtFimFA"])),
+$_POST["txtDescFA"],
+unserialize($_SESSION["Usuario"])->getID()
+) != false
+) {
+include_once "../View/cadastroRealizado.php";
+} else {
+include_once "../View/cadastroNaoRealizado.php";
+}
+break;
+
+//--Excluir Formacao-//
+case isset($_POST["btnExcluirFA"]):
+require_once "../Controller/FormacaoAcadController.php";
+include_once "../Model/Usuario.php";
+$fController = new FormacaoAcadController();
+if ($fController->remover($_POST["id"]) == true) {
+include_once "../View/informacaoExcluida.php";
+} else {
+include_once "../View/operacaoNaoRealizda.php";
+}
+break;
+
+//--Adicionar Experiencia Profissional-//
+case isset($_POST["btnAddEP"]):
+require_once "../Controller/ExperienciaProfissionalController.php";
+include_once "../Model/Usuario.php";
+$epController = new ExperienciaProfissionalController();
+if ($epController->inserir(
+date("Y-m-d", strtotime($_POST["txtInicioEP"])),
+date("Y-m-d", strtotime($_POST["txtFimEP"])),
+$_POST["txtEmpEP"],
+$_POST["txtDescEP"],
+unserialize($_SESSION["Usuario"])->getID()
+) != false
+) {
+include_once "../View/informacaoInserida.php";
+} else {
+include_once "../View/operacaoNRealizada.php";
+}
+break;
+
+//--Excluir Experiencia Profissional-//
+case isset($_POST["btnExcluirEP"]):
+require_once "../Controller/ExperienciaProfissionalController.php";
+include_once "../Model/Usuario.php";
+$epController = new ExperienciaProfissionalController();
+if ($epController->remover($_POST["idEP"]) == true) {
+include_once "../View/informacaoExcluida.php";
+} else {
+include_once "../View/operacaoNRealizada.php";
+}
+break;
+
+
+
 
 ?>
